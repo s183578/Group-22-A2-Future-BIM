@@ -48,6 +48,8 @@ def writeHTML(model,name):
     cont+=1*"\t"+"<head>\n"
     # ---- ADD HTMLBUILD CSS - COULD ADD OTHERS HERE :)
     cont+=2*"\t"+"<link rel='stylesheet' href='../css/html-build.css'></link>\n"
+    # ---- ADD HTMLBUILD CSS - COULD ADD OTHERS HERE :)
+    cont+=2*"\t"+"<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' integrity='sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu' crossorigin='anonymous'>"
     # ---- ADD HTMLBUILD JS - COULD ADD OTHERS HERE :)
     cont+=2*"\t"+"<script src='../js/html-build.js'></script>\n"
     # ---- JQUERY - IT WOULD BE CRAZY NOT TO
@@ -56,6 +58,8 @@ def writeHTML(model,name):
     cont+=1*"\t"+"</head>\n"
     # ---- ADD BODY
     cont+=1*"\t"+"<body onload=\"main()\">\n"  
+    # ---- ADD TITEL
+    cont+=1*"\t"+"<h1 id='projectTitle'></h1>"
     
     # ---- ADD CUSTOM HTML FOR THE BUILDING HERE
     cont+=writeCustomHTML(model)
@@ -86,8 +90,16 @@ def writeCustomHTML(model):
     
     # ---- ADD PROJECT CUSTOM ENTITY
     project = model.by_type('IfcProject')[0]
-    custom+=3*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)8
+    custom+=3*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName) # ---- Removed 8?
+    
     # it looks like it would make sense to use the DOM here and append stuff to it...
+    
+   
+        
+        
+    
+    
+    
     
     # ---- ADD SITE CUSTOM ENTITY
     site = model.by_type('IfcSite')[0]
@@ -107,13 +119,42 @@ def writeCustomHTML(model):
     # ---- CLASSIFY THE FLOORS AS LOWER, GROUND OR UPPER AND WRITE TO CUSTOM ENTITIES
     custom+= classifyFloors(floors,site_elev)
     
+   
+    
+    
     # ---- CLOSE BUILDING
     custom+=5*"\t"+"</building->\n"
+    
+    
     
     # ---- CLOSE SITE AND PROJECT
     custom+=4*"\t"+"</site->\n"
     custom+=3*"\t"+"</project->\n"
+      # ---- ADD SPACE CUSTOM ENTITY
     
+    custom+=4*"\t"+"<spaces-> <h4>Spaces</h4> <table><th>Space</th><th>Level</th><th>Area</th>\n"
+    spaces = model.by_type('IfcSpace')
+    for space in spaces: # ---- FOR EVERY SPACE, GIVE THEM NEW NAMES
+        space_LongName = space.LongName
+        space_name = space.Name
+        for definition in space.IsDefinedBy: # ---- FIND THE PROPERTIES FOR EACH SPACES
+            if definition.is_a('IfcRelDefinesByProperties'):
+                property_set = definition.RelatingPropertyDefinition
+                if property_set.Name == "PSet_Revit_Dimensions": # ---- IF THE PROPERTY IS DIMENSIONS
+                    for property in property_set.HasProperties:
+                        if property.Name == "Area":  # ---- SAVE THE AREA
+                            space_area = property.NominalValue.wrappedValue
+                if property_set.Name == "PSet_Revit_Constraints": # ---- IF THE PROPERTY IS CONSTRAINTS
+                    for property in property_set.HasProperties:
+                        if property.Name == "Level": # ---- SAVE LEVEL OF THE SPACE
+                            space_level = property.NominalValue.wrappedValue
+        
+        # ---- SAVE AS AN ARRAY
+        #custom+=5*"\t"+"<space- longName=\'{}\' name=\'{}\' area=\'{}\' level=\'{}\'>{}, {}, Area: {}m<sup>2</sup> <br>\n".format(space_LongName,space_name,space_area,space_level,space_LongName, space_level, round(float(space_area),1))
+        custom+=5*"\t"+"<tr><td>{}</td><td>{}</td><td>{}m<sup>2</sup></td></tr>\n".format(space_LongName,space_level,round(float(space_area),1))
+        #custom+=5*"\t"+"</space->\n"
+    custom+=4*"\t"+"</table></spaces->\n"
+
     # ---- END OF MODEL ENTITY
     custom+=2*"\t"+"</model->\n"
     
