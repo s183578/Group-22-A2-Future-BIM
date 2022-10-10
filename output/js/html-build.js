@@ -13,20 +13,25 @@ function main() {
 	let num_floors = floors.length;
 	console.log(num_floors);
 	
-	// add data to the properties box
-	$('props-').prepend('number of floors is '+num_floors);
-	$('props-').prepend('site elevation is '+$('site-').attr('elev')+'<br>');
+	// add data to the properties box // added more boxes for the extra information we want to display
+	$('props-').prepend('Number of floors: '+num_floors);
+	$('props-').prepend('Site elevation: '+$('site-').attr('elev')+'<br>');
+	$('props-').prepend('Site latitude: '+$('site-').attr('lat')+'<br>');
+	$('props-').prepend('<h4>Properties</h4>Site longitude: '+$('site-').attr('long')+'<br>');
+	
+	$('h1').prepend($('project-').attr('name')+'<br>');
+	
 	
 	// load the plan so we can edit it
-	plan('happy');
+	plan('Click on a floor to see the attributes');
 	
 	// The .each() method is unnecessary here:
 	$( 'floor-' ).each(function() {
 	console.log($(this)[0].innerHTML);
 		$( this ).on("click", function(){
 			//$('plan-').css("background-color","black");
-			
-			changePlan($(this).attr('name')+':'+$(this).attr('level'));
+															// add more data we extract
+			changePlan('Floor name: ' + $(this).attr('name') + '<br>Level: ' + $(this).attr('level') + '<br>Elevation: ' + $(this).attr('elev'));
 			//$( this ).innerHTML
 		});
 	});
