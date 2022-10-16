@@ -7,9 +7,9 @@ model- {
 	
 	width:50%;
 	border:none;
-	color:#FFC0CB;
+	color:#FFC0CB; /* Changes the color */
 	margin:auto;
-	padding-bottom:50px;
+	padding-bottom:50px; 
 	FLOAT:LEFT;
 	height:100%;
 }
@@ -19,7 +19,7 @@ view- {
 	background-color:#7395ae; /* Changes the color */
 	width:50%;
 	border:none;
-	color:#FFC0CB;
+	color:#FFC0CB; /* Changes the color */
 	margin:auto;
 	padding-bottom:50px;
 	FLOAT:LEFT;
@@ -242,9 +242,9 @@ ground-{
 	background-color: #5d5c61;
 	color: #fff;
 	margin: 0;
-	text-align: center;
+	text-align: center; /*  alligns title to the center  */
 }
-
+/* creates table to display data */
 table, th, td {
   border:1px solid black;
   width: 90%;
