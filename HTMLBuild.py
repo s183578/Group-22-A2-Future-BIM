@@ -132,6 +132,8 @@ def writeCustomHTML(model):
     custom+=3*"\t"+"</project->\n"
       # ---- ADD SPACE CUSTOM ENTITY
     
+#---------------------------------------------------------------------------------------------------------------------------------------------------#    
+    # HERE GROUP 22 MADE OWN CODE TO GET THE LEVEL, AREA AND SPACEE LONGNAME OF SPACES IN THE BUILDING
     custom+=4*"\t"+"<spaces-> <h4>Spaces</h4> <table><th>Space</th><th>Level</th><th>Area</th>\n"
     spaces = model.by_type('IfcSpace')
     for space in spaces: # ---- FOR EVERY SPACE, GIVE THEM NEW NAMES
@@ -149,11 +151,13 @@ def writeCustomHTML(model):
                         if property.Name == "Level": # ---- SAVE LEVEL OF THE SPACE
                             space_level = property.NominalValue.wrappedValue
         
-        # ---- SAVE AS AN ARRAY
+        # ---- SAVE AS AN ARRAY AND SAVES INTO THE "CUSTOM STRING" TO BE ABLE TO DISPLAY THE DATA INSIDE THE TABLE OF THE FRONT PAGE
         #custom+=5*"\t"+"<space- longName=\'{}\' name=\'{}\' area=\'{}\' level=\'{}\'>{}, {}, Area: {}m<sup>2</sup> <br>\n".format(space_LongName,space_name,space_area,space_level,space_LongName, space_level, round(float(space_area),1))
         custom+=5*"\t"+"<tr><td>{}</td><td>{}</td><td>{}m<sup>2</sup></td></tr>\n".format(space_LongName,space_level,round(float(space_area),1))
         #custom+=5*"\t"+"</space->\n"
     custom+=4*"\t"+"</table></spaces->\n"
+#---------------------------------------------------------------------------------------------------------------------------------------------------#  
+
 
     # ---- END OF MODEL ENTITY
     custom+=2*"\t"+"</model->\n"
