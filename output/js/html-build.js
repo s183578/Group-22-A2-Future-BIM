@@ -22,7 +22,7 @@ function main() {
 	$('h1').prepend($('project-').attr('name')+'<br>');
 	
 	
-	// load the plan so we can edit it
+	// load the plan so we can edit it and changed text from happy
 	plan('Click on a floor to see the attributes');
 	
 	// The .each() method is unnecessary here:
